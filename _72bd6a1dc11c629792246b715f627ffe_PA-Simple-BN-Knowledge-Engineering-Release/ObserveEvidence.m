@@ -39,6 +39,11 @@ for i = 1:size(E, 1),
             % Hint: You might find it helpful to use IndexToAssignment
             %       and SetValueOfAssignment
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+            assignments = IndexToAssignment(1:prod(F(j).card), F(j).card); % all assignments
+            indxNotInE = find(assignments(:, indx) != x); % index of the assignments where v != x
+            outOfE = IndexToAssignment(find(assignments(:, indx) != x), F(j).card); % assignments not in E
+            F(j) = SetValueOfAssignment(F(j), outOfE, 0);
             
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
