@@ -27,7 +27,21 @@ end
 % Remember to renormalize the entries of M!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-M = struct('var', [], 'card', [], 'val', []); % Returns empty factor. Change this.
+M = struct('var', V, 'card', [], 'val', []);
+
+Joint = ComputeJointDistribution(F);
+
+if ~isempty(E),
+	Joint = ObserveEvidence([Joint], E);
+	Joint.val = Joint.val / sum(Joint.val); % normalise
+end
+
+[dummy map] = intersect(Joint.var, V);
+
+M.card = Joint.card(map);
+
+assignments = IndexToAssignment(1:prod(Joint.card), Joint.card);
+M.val = accumarray(assignments(:, map), Joint.val)(:)';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
